@@ -1,0 +1,23 @@
+node_modules/
+.next/
+out/
+build/
+coverage/
+.DS_Store
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+
+# Sesión de WhatsApp (Baileys): contiene claves de cifrado, NUNCA versionar
+.wa-auth/
+qr.png
+
+# Backups y volcados
+backups/
+*.dump

@@ -1,0 +1,26 @@
+{
+  "titulo_es": "vende-ia: pedidos de WhatsApp a datos estructurados y leads puntuados",
+  "titulo_en": "vende-ia: WhatsApp orders to structured data and scored leads",
+  "resumen_es": "SaaS multi-inquilino que convierte conversaciones de WhatsApp en pedidos estructurados, les asigna un scoring de lead (frío, tibio, caliente por bandas de score) y deriva a un asesor humano cuando el cliente está listo para comprar. Un núcleo compartido (atender/procesar) sirve a dos puertas de entrada, el worker de WhatsApp (Baileys) y un simulador web, y un dashboard Next.js sobre Supabase muestra el pipeline en vivo. El repositorio incluye 689 tests unitarios y un demo offline que corre sin credenciales.",
+  "resumen_en": "Multi-tenant SaaS that turns WhatsApp conversations into structured orders, assigns a lead score (cold, warm, hot by score bands) and hands hot leads off to a human advisor. A shared core (atender/procesar) serves two entry points, a WhatsApp worker (Baileys) and a web simulator, and a Next.js dashboard on Supabase shows the pipeline live. The repo ships 689 unit tests and an offline demo that runs without credentials.",
+  "puntos_es": [
+    "Patrón de núcleo compartido con dos puertas de entrada: WhatsApp real y simulador web llaman a la misma función",
+    "Scoring de lead 0-100 con temperatura derivada por bandas fijas en código, no por el LLM",
+    "Multi-inquilino con RLS en Postgres, roles de asesor, motor de asignación y límites por plan",
+    "Guardrails anti-inyección, antifraude de comprobantes de pago y takeover humano",
+    "Dependencias inyectables: demo offline y 689 tests sin red ni credenciales"
+  ],
+  "puntos_en": [
+    "Shared-core pattern with two entry points: real WhatsApp and a web simulator call the same function",
+    "Lead score 0-100 with temperature derived from fixed bands in code, not by the LLM",
+    "Multi-tenant with Postgres RLS, advisor roles, an assignment engine and per-plan limits",
+    "Prompt-injection guardrails, payment-receipt fraud checks and human takeover",
+    "Injectable dependencies: offline demo and 689 tests with no network or credentials"
+  ],
+  "stack": ["TypeScript", "Next.js", "React", "Supabase (Postgres)", "Baileys", "OpenAI-compatible LLM API (DeepSeek)", "Zod", "Vitest", "Docker"],
+  "tags": ["whatsapp", "lead-scoring", "multi-tenant", "llm", "agentes", "ventas", "crm"],
+  "cat": "Agentes y workflows",
+  "tipo": "Proyecto completo",
+  "descripcion_repo_corta_en": "Multi-tenant SaaS: WhatsApp orders to structured data, lead scoring and human handoff, with a live dashboard.",
+  "topics": ["whatsapp", "lead-scoring", "multi-tenant", "nextjs", "supabase", "llm", "baileys", "typescript", "sales-agent"]
+}

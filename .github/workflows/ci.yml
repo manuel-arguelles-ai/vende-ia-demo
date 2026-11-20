@@ -1,0 +1,29 @@
+name: CI
+
+# Compuerta de calidad: typecheck + tests. Corre en cada PR hacia main
+# y en pushes a las ramas principales. No toca deploy (eso sigue manual en Dokploy).
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, feat/saas-multitenant]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Tests
+        run: npm test

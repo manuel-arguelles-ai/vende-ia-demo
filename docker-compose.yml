@@ -1,0 +1,49 @@
+# vende-ia con Docker Compose: servicios web (Next.js), worker (WhatsApp) y kokoro (TTS opcional).
+# NO publicar puertos al host: solo expose (red interna del compose).
+services:
+  web:
+    build:
+      context: .
+      args:
+        # NEXT_PUBLIC_* se hornean en build-time (ver Dockerfile).
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    # Algunos orquestadores inyectan un /app/.env con los $ del hash escapados ($$).
+    # y @next/env lo prioriza sobre las env del contenedor, corrompiendo los hashes.
+    # Las env ya están en el entorno del contenedor (env_file → Config.Env, $ correcto),
+    # así que borramos el .env para que Next use process.env.
+    command: sh -c "rm -f .env && npm run start"
+    environment:
+      - NODE_ENV=production
+    env_file: .env
+    expose:
+      - "3000"
+    depends_on:
+      - worker
+    restart: unless-stopped
+
+  worker:
+    build: .
+    command: npm run worker
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    env_file: .env
+    expose:
+      - "3001"
+    volumes:
+      - wa-auth:/app/.wa-auth   # sesión WhatsApp persistente (no re-escanear QR en cada deploy)
+    depends_on:
+      - kokoro
+    restart: unless-stopped     # nunca duerme (socket WhatsApp permanente)
+
+  # Capa de voz: TTS Kokoro self-hosted. Solo red interna; el worker lo llama
+  # por KOKORO_URL=http://kokoro:8080. Si se cae, el worker degrada a texto.
+  kokoro:
+    build: ./worker/kokoro-service
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+volumes:
+  wa-auth:
